@@ -93,7 +93,7 @@ class ReviewController extends Controller
     }
 
     //delete exsiting review
-    public function destro($id)
+    public function destroy($id)
     {
         //find the desired review by id.
         $review = Review::find($id);
