@@ -2,63 +2,41 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TeamResource;
 use App\Models\Team;
-use Illuminate\Http\Request;
+use App\Traits\ApiResponse;
+
 
 class TeamController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    use ApiResponse;
+
+    //show all the team members
     public function index()
     {
-        //
+        //get all team info
+        $teams = Team::get();
+        //in this condition we are checking if the teams table is empty or not.
+        if($teams->isNotEmpty())
+        {
+            return $this->successResponse(TeamResource::collection($teams),'Data fetched successfully',200);
+        }
+
+        return $this->errorResponse('there is no data in the table',401);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    //show a sepcific team member
+    public function show($id)
     {
-        //
+
+        try{
+            $team = Team::find($id);
+            return $this->successResponse(new TeamResource($team), 'Retrived Successfully');
+        }catch(\Exception $exp){
+            return $this->errorResponse('The team member is not found',401);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Team  $team
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Team $team)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Team  $team
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Team $team)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Team  $team
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Team $team)
-    {
-        //
-    }
 }

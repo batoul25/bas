@@ -28,6 +28,7 @@ class ServiceController extends Controller
     }
 
 
+    //show a specific service
     public function show($id)
     {
         //
