@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('email')->unique();
             $table->string('password');
-            $table->float('Total_Space');
-            $table->float('Remaining_Space');
+            $table->double('Total_Space')->default(100.0);
+            $table->double('Remaining_Space')->default(100.0);
             $table->rememberToken();
             $table->timestamps();
         });
