@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->longText('question');
             $table->string('answer');
-            $table->integer('mostFrequent');
+            $table->boolean('mostFrequent')->default(true);
             $table->timestamps();
         });
     }
