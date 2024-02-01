@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\API\CaseStudyController;
-use App\Http\Controllers\API\CompanyProfileController;
-use App\Http\Controllers\API\FileController;
+use App\Http\Controllers\Api\CaseStudyController;
+use App\Http\Controllers\Api\CompanyProfileController;
+use App\Http\Controllers\Api\FileController;
+use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\FolderController;
-use App\Http\Controllers\API\FooterController;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\FooterController;
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,23 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('refresh', 'refresh');
 
 });
+
+//------------------------------Review Routes--------------------------------------//
+Route::group(['prefix'=>'reviews'],function(){
+    //show all Reviews
+    Route::get('/review',[ReviewController::class,'index']);
+    //show a specific review
+    Route::get('/review/{review_id}',[ReviewController::class,'show']);
+    //insert new review
+    Route::post('/review',[ReviewController::class,'store']);
+    //update existing review
+    Route::post('/review/{review_id}',[ReviewController::class,'update']);
+    //remove existing review
+    Route::delete('/review/{review_id}',[ReviewController::class,'destroy']);
+    //remove all reviews
+    Route::get('/destroyall',[ReviewController::class,'destroy_all']);
+    });
+
 
 Route::get('/casestudy' , [CaseStudyController::class , 'index']);
 Route::post('/casestudy' , [CaseStudyController::class , 'store']);

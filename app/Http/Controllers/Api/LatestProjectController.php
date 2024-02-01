@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\latest_project;
 use App\Traits\ApiResponse;
-use Illuminate\Http\Request;
+
 
 class LatestProjectController extends Controller
 {
@@ -49,6 +49,7 @@ class LatestProjectController extends Controller
                 'serviceProvided' => $val_request['serviceProvided'],
                 'descirption' => $val_request['descirption'],
                 'CEOName' => $val_request['CEOName'],
+                'order'   => $newest_order + 1
 
             ]);
             if($newProject)
@@ -115,3 +116,4 @@ class LatestProjectController extends Controller
         return $this->successResponse(null,'all latest projects removed successfully',200);
     }
 }
+

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\InboxMessagesRequest;
 use App\Http\Resources\InboxMessagesresource;
@@ -45,7 +45,7 @@ class InboxMessagesController extends Controller
             ]);
             if($newMessage)
             {//check if it's added successfully.
-                return $this->successResponse($newMessage,'Message added successfully',201);
+                return $this->successResponse(new InboxMessagesRequest($newMessage),'Message added successfully',201);
             }
             return $this->errorResponse('there was an error adding the message!',401);
 

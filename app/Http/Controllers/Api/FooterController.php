@@ -1,105 +1,103 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\FooterRequest;
 use App\Http\Resources\FooterResource;
 use App\Models\footer;
 use App\Traits\ApiResponse;
-use Illuminate\Http\Request;
+
 
 class FooterController extends Controller
 {
     use ApiResponse;
 
-    /**
-     * Display a listing of the resource.
-     */
+   //display all the footer info
     public function index()
     {
-        $footer = FooterResource::collection(footer::get());
-        return $this->successResponse($footer, 'ok', 200);
+        //get all footer info...
+         $footer= footer::get();
+         //in this condition we are checking if the footers table is empty or not.
+         if($footer->isNotEmpty())
+         {
+            return $this->successResponse(FooterResource::collection($footer),'Data fetched successfully',200);
+         }
+
+           return $this->errorResponse('there is no data in the table',401);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    //add a new link to the footer
     public function store(FooterRequest $request)
     {
-        $request->validate([
-            'logo'     => ['required'],
-            'path'     => ['required'],
-            'link'     => ['required']
+        $val_request = $request->validated();
+        $existing_link = footer::where('link',$val_request)->first();
+        if($existing_link)
+            {
+                //check if it's already added before.
+            return $this->errorResponse('Link already exists',401);
+            }
 
-        ]);
-        $footer = footer::create($request->all());
-        if ($footer) {
-            return $this->successResponse(new FooterResource($footer), 'the footer created successfully', 200);
-        } else {
-            return $this->errorResponse(null,'the footer not added',401);
-        }
+        else{
+            $newLink = footer::create([
+                'logo'    => $val_request['logo'],
+                'path' => $val_request['path'],
+                'link' => $val_request['link']
+            ]);
+            if($newLink)
+            {//check if it's added successfully
+                return $this->successResponse(new FooterResource($newLink),'Link added successfully',201);
+            }
+            return $this->errorResponse('there was an error adding the link!',401);
+    }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    //show a specific exisiting link
+    public function show($id)
     {
         $footer = footer::find($id);
-    if ($footer) {
-        return $this->successResponse(new FooterResource($footer), 'ok', 200);
-    }
-    return $this->errorResponse(null, 'The footer not found', 404);
+        if ($footer) {
+            return $this->successResponse(new FooterResource($footer), 'Link Retrived Successfully', 200);
+        }
+        return $this->errorResponse('The footer not found', 401);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    //update an exisiting link
+    public function update(FooterRequest $request, $id)
     {
-        //
+        $val_request = $request->validated();
+        //find the desired project by id.
+        $link = footer::find($id);
+
+        //in this condition we are checking if the project record exits or not.
+
+        if($link)//if it exists
+        {
+            $updated_link = $link->update($val_request);
+            return $this->successResponse($updated_link,'LInk updated successfully',200);
+        }
+
+        //if it does not exist it will break the if statement and return the error response
+        return $this->errorResponse('this link does not exists',401);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $request->validate([
-            'logo'     => ['required'],
-            'path'     => ['required'],
-            'link'     => ['required']
-         ]);
-         $footer=footer::find($id);
-         $footer->update($request->all());
-         if ($footer) {
-             return $this->successResponse(new FooterResource($footer), 'the footer update', 200);
-         }else {
-             return $this->errorResponse(null,'the footer not update',401);
-         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+   //delete a specific link
+    public function destroy($id)
     {
         $footer = footer::find($id);
         if (!$footer) {
 
-            return $this->errorResponse(null, 'this footer not found',404);
+            return $this->errorResponse('This Footer not found',401);
         }
-        $footer->delete();
+        else{
+            $footer->delete();
 
-        return $this->successResponse('', 'footer deleted successfully',200);
+            return $this->successResponse(new FooterResource($footer), 'Footer deleted successfully',200);
+        }
+    }
+
+    public function destroy_all()
+    {
+        footer::truncate();
+        return $this->successResponse(null,'all footer links removed successfully',200);
     }
 }
