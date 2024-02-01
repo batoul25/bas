@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
-class InboxMessagesRequest extends FormRequest
+class ProjectLogoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,16 +25,14 @@ class InboxMessagesRequest extends FormRequest
     public function rules()
     {
         return [
-            'admin_id' => ['integer', 'exists:admins,id'] ,//to make sure that the user does exist.
-            'service'  => ['required' , 'string'] ,
-            'name' => ['required' , 'string'] ,
-            'companyName' => ['required' , 'string'] ,
-            'number' => [] ,
-            'position' => ['required' , 'string'] ,
-            'email' => ['required' , 'string'] ,
-            'message' => ['required','string', 'min:15', 'max:300']
+            //
+            'project_id' =>  ['integer', 'exists:latest_projects,id'] ,//to make sure that the project does exist.
+            'logo' => ['required','image','mimes:jpg,png,jpeg,gif,svg','max:2048'] ,
+            'path' => ['required' , 'string'] ,
+            'order' => ['required' , 'integer' , 'min:1' , 'between:1,50']
         ];
     }
+
 
        //if there is an error with the validation display the error as a Json response.
        protected function failedValidation(Validator $validator)

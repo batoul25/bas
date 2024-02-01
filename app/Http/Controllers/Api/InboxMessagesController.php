@@ -34,7 +34,7 @@ class InboxMessagesController extends Controller
 
 
             $newMessage= InboxMessages::create([
-                'admin_id' => $val_request['admin_id'],
+                'admin_id' => auth()->user()->id,
                 'service' => $val_request['service'] ,
                 'name'    => $val_request['name'],
                 'companyName' => $val_request['companyName'],

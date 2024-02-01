@@ -34,25 +34,18 @@ class FAQsController extends Controller
     {
         $val_request = $request->validated();
 
-        $existing_question = FAQs::where('question',$val_request)->first();
-        if($existing_question)
-        {
-            //check if it's already added before.
-            return $this->errorResponse('Question already exists',401);
-        }
 
-        else{
             $newQuestion = FAQs::create([
                 'question'    => $val_request['question'],
                 'answer' => $val_request['answer'],
-                'mostFrequent' => $val_request['mostFrequent'],
+                // 'mostFrequent' => $val_request['mostFrequent'],
             ]);
             if($newQuestion)
             {//check if it's added successfully.
                 return $this->successResponse($newQuestion,'Question added successfully',201);
             }
             return $this->errorResponse('there was an error adding the question!',401);
-    }
+
 }
     //show a specific question
     public function show($id)
