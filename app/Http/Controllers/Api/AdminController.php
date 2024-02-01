@@ -35,7 +35,7 @@ class AdminController extends Controller
     {
         $$this->validate($request, [
             'email' => 'required|email|unique:admins',
-            'password' => 'required|min:8',
+            'password' => 'required|min:6',
         ]);
 
         $admin = Admin::create([
