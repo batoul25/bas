@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Http\Requests\CompanyProfileRequest;
 use App\Http\Resources\CompanyProfileResource;
 use App\Models\Company_Profile;
 use App\Traits\ApiResponse;
@@ -12,85 +12,88 @@ class CompanyProfileController extends Controller
 {
     use ApiResponse;
 
-    /**
-     * Display a listing of the resource.
-     */
+    //dispaly all the company profile
     public function index(){
-        $companyprofile = CompanyProfileResource::collection(Company_Profile::get());
-        return $this->successResponse($companyprofile, 'ok', 200);
+         //get all company profiles info
+         $companyProfiles = Company_Profile::get();
+         //in this condition we are checking if the company profiles table is empty or not.
+         if($companyProfiles->isNotEmpty())
+         {
+             return $this->successResponse(CompanyProfileResource::collection($companyProfiles),'Data fetched successfully',200);
+         }
+           return $this->errorResponse('there is no data in the table',401);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    //add a new company profile to the database
+    public function store(CompanyProfileRequest $request)
     {
-        $request->validate([
-            'company_name'          => ['required'],
-            'description'           => ['required'],
-            'industry'              => ['required'],
-            'location'              => ['required'],
-            'intro'                 => ['required'],
-            'company_problem'       => ['required'],
-            'logo'                  => ['required'],
-            'solution'              => ['required'],
+        $val_request = $request->validated();
+        $existing_profile = Company_Profile::where('company_problem',$val_request)->first();
+        if($existing_profile)
+            {      //check if it's already added before.
+            return $this->errorResponse('Profile already exists',401);
+            }
 
-        ]);
-        $companyprofile = Company_Profile::create($request->all());
-        if ($companyprofile) {
-            return $this->successResponse(new CompanyProfileResource($companyprofile), 'Company profile created successfully', '', 200);
-        } else {
-            return $this->errorResponse(null,'the companyprofile not added',401);
-        }
+        else{
+            $newProfile = Company_Profile::create([
+                'company_name'    => $val_request['company_name'],
+                'description' => $val_request['description'],
+                'industry' => $val_request['industry'],
+                'location' => $val_request['location'],
+                'intro'   => $val_request['intro'],
+                'company_problem'   => $val_request['company_problem'],
+                'logo'   => $val_request['logo'],
+                'path'   => $val_request['path'],
+                'solution'   => $val_request['solution']
+            ]);
+            if($newProfile)
+            {//check if it's added successfully.
+                return $this->successResponse(new CompanyProfileResource($newProfile),'Profile added successfully',201);
+            }
+            return $this->errorResponse('there was an error adding the profile!',401);
+    }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+   //show a specidic company profile by id
+    public function show($id)
     {
         $companyprofile = Company_Profile::find($id);
     if ($companyprofile) {
-        return $this->successResponse(new CompanyProfileResource($companyprofile), 'ok', 200);
+        return $this->successResponse(new CompanyProfileResource($companyprofile), 'Company profile retrived Successfully', 200);
     }
-    return $this->errorResponse(null, 'The companyprofile not found', 404);
+    return $this->errorResponse('The Company Profile not found', 401);
     }
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+
+    //update a specific exisiting company profile
+    public function update(CompanyProfileRequest $request, $id)
     {
-        $request->validate([
-            'company_name'          => ['required'],
-            'description'           => ['required'],
-            'industry'              => ['required'],
-            'location'              => ['required'],
-            'intro'                 => ['required'],
-            'company_problem'       => ['required'],
-            'logo'                  => ['required'],
-            'solution'              => ['required'],
-         ]);
+         $val_request = $request->validated();
          $companyprofile=Company_Profile::find($id);
-         $companyprofile->update($request->all());
+         $companyprofile->update($val_request);
          if ($companyprofile) {
              return $this->successResponse(new CompanyProfileResource($companyprofile), 'the companyprofile update', 200);
          }else {
-             return $this->errorResponse(null,'the companyprofile not update',401);
+             return $this->errorResponse('the company profile does not exist',401);
          }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    //delete a specific compnay profile
+    public function destroy($id)
     {
         $companyprofile = Company_Profile::find($id);
         if (!$companyprofile) {
 
-            return $this->errorResponse(null, 'this companyprofile not found','',404);
+            return $this->errorResponse('the company profile not found',401);
         }
+        else {
         $companyprofile->delete();
 
-        return $this->successResponse('', 'companyprofile deleted successfully',200);
+        return $this->successResponse(new CompanyProfileResource($companyprofile),'company profile deleted successfully',200);
+        }
+}
+    public function destroy_all()
+    {
+        Company_Profile::truncate();
+        return $this->successResponse(null,'all company profiles removed successfully',200);
     }
 }

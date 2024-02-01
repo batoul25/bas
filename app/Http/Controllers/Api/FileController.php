@@ -1,109 +1,104 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\FileRequest;
 use App\Http\Resources\FileResource;
 use App\Models\File;
 use App\Traits\ApiResponse;
-use Illuminate\Http\Request;
+
 
 class FileController extends Controller
 {
     use ApiResponse;
 
-    /**
-     * Display a listing of the resource.
-     */
+    //display all the files
     public function index()
     {
-        $file = FileResource::collection(File::get());
-        return $this->successResponse($file, 'ok', 200);
+        //get all files info
+        $files = File::get();
+        //in this condition we are checking if the files table is empty or not.
+        if($files->isNotEmpty())
+        {
+            return $this->successResponse(FileResource::collection($files),'Data fetched successfully',200);
+        }
+        return $this->errorResponse('there is no data in the table',401);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    //add a new file
     public function store(FileRequest $request)
     {
-        $request->validate([
+        $val_request = $request->validated();
+        $existing_file = File::where('name',$val_request)->first();
+        if($existing_file)
+            {
+                //check if it's already added before.
+            return $this->errorResponse('File already exists',401);
+            }
 
-            'name' => ['required'],
-            'date' => ['required'],
-            'size' => ['required'],
-            'type' => ['required'],
-        ]);
-        $file = File::create($request->all());
-        if ($file) {
-            return $this->successResponse(new FileResource($file), 'file created successfully', 200);
-        } else {
-            return $this->apiResponse(null,'the file not added',401);
-        }
+        else{
+            $newFile = File::create([
+                'name'    => $val_request['name'],
+                'date' => $val_request['date'],
+                'size' => $val_request['size'],
+                'type' => $val_request['type']
+            ]);
+            if($newFile)
+            {//check if it's added successfully.
+                return $this->successResponse(new FileResource($newFile),'File added successfully',201);
+            }
+            return $this->errorResponse('there was an error adding the file!',401);
+    }
     }
 
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    //show a specific exisiting file
+    public function show($id)
     {
         $file = File::find($id);
     if ($file) {
-        return $this->successResponse(new FileResource($file), 'ok', 200);
+        return $this->successResponse(new FileResource($file), 'File Retrived Successfully', 200);
     }
-    return $this->apiResponse(null, 'The file not found', 404);
+    return $this->errorResponse('The file not found', 401);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+
+    //update an exisiting file
+    public function update(FileRequest $request,$id)
     {
-        //
+        $val_request = $request->validated();
+        //find the desired file by id.
+        $file = File::find($id);
+
+        //in this condition we are checking if the file record exits or not.
+        if($file)//if it exists
+        {
+            $updated_file = $file->update($val_request);
+            return $this->successResponse($updated_file,'File updated successfully',200);
+        }
+
+        //if it does not exist it will break the if statement and return the error response
+        return $this->errorResponse('this file does not exists',401);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $request->validate([
-             'name' => 'required',
-             'date' => 'required',
-             'size' => 'required',
-             'type' => 'required',
-
-         ]);
-         $file=File::find($id);
-         $file->update($request->all());
-         if ($file) {
-             return $this->successResponse(new FileResource($file), 'the file update', 200);
-         }else {
-             return $this->errorResponse(null,'the file not update',401);
-         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+   //delete a specific file
+    public function destroy($id)
     {
         $file = File::find($id);
         if (!$file) {
 
-            return $this->errorResponse(null, 'this file not found','',404);
+            return $this->errorResponse('this file not found',401);
         }
+        else{
         $file->delete();
 
-        return $this->successResponse('', 'file deleted successfully',200);
+        return $this->successResponse(new FileResource($file),'file deleted successfully',200);
+        }
+    }
+
+    public function destroy_all()
+    {
+        File::truncate();
+        return $this->successResponse(null,'all files removed successfully',200);
     }
 }
