@@ -26,8 +26,9 @@ class faqRequest extends FormRequest
     {
         return [
             //
-            'question' => ['required' , 'string', 'min:15', 'max:300'] ,
-            'answer'   => ['required' , 'string', 'min:15', 'max:300']
+            'question' => ['required' , 'string', 'min:5', 'max:300'] ,
+            'answer'   => ['required' , 'string', 'min:15', 'max:500'],
+            'mostFrequent' =>['integer']
         ];
     }
 
