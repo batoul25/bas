@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\AdminResource;
 use App\Models\Admin;
+use App\Models\User;
+use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminRequest;
 
 class AdminController extends Controller
 {
+    use ApiResponse;
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +21,8 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //
+        $admin = User::all();
+        return $this->successResponse($admin, 'ok', 200);
     }
 
     /**
@@ -23,42 +31,23 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AdminRequest $request)
     {
-        //
-    }
+        $$this->validate($request, [
+            'email' => 'required|email|unique:admins',
+            'password' => 'required|min:6',
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Admin  $admin
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Admin $admin)
-    {
-        //
-    }
+        $admin = Admin::create([
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Admin  $admin
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Admin $admin)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Admin  $admin
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Admin $admin)
-    {
-        //
+        $admin = Admin::create($request->all());
+        if ($admin) {
+            return $this->successResponse(new AdminResource($admin), 'the admin created successfully', 200);
+        } else {
+            return $this->errorResponse(null,'the admin not added',401);
+        }
     }
 }
