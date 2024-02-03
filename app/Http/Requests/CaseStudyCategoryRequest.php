@@ -5,12 +5,15 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
-class Case_StudyRequest extends FormRequest
+
+class CaseStudyCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     *
+     * @return bool
      */
-    public function authorize(): bool
+    public function authorize()
     {
         return true;
     }
@@ -23,10 +26,8 @@ class Case_StudyRequest extends FormRequest
     public function rules()
     {
         return [
-            'category_id' => ['required' , 'integer'],
-            'logo'     => ['required','image','mimes:jpg,png,jpeg,gif,svg','max:2048'] ,
-            'company_name'     => ['required' , 'string'] ,
-            'order'    => ['required' , 'integer' , 'min:1' , 'between:1,50']
+            //
+            'name' => ['required' , 'string']
         ];
     }
 

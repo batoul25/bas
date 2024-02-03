@@ -16,7 +16,7 @@ class Case_StudyResource extends JsonResource
     {
         return [
            'id' => $this->id,
-            'category' => $this->category ,
+            'category' => new CaseStudyCategoryResource($this->category),
             'logo' => $this->logo ,
             'company_name' => $this->company_name ,
             'order' => $this->order

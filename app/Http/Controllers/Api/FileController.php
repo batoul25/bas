@@ -16,7 +16,7 @@ class FileController extends Controller
     public function index()
     {
         //get all files info
-        $files = File::get();
+        $files = File::with('folder')->get();
         //in this condition we are checking if the files table is empty or not.
         if($files->isNotEmpty())
         {
@@ -29,15 +29,12 @@ class FileController extends Controller
     public function store(FileRequest $request)
     {
         $val_request = $request->validated();
-        $existing_file = File::where('name',$val_request)->first();
-        if($existing_file)
-            {
-                //check if it's already added before.
-            return $this->errorResponse('File already exists',401);
-            }
 
-        else{
+
             $newFile = File::create([
+                'admin_id' => $val_request['admin_id'],
+                'user_id' => $val_request['user_id'],
+                'folder_id' => $val_request['folder_id'],
                 'name'    => $val_request['name'],
                 'date' => $val_request['date'],
                 'size' => $val_request['size'],
@@ -48,16 +45,16 @@ class FileController extends Controller
                 return $this->successResponse(new FileResource($newFile),'File added successfully',201);
             }
             return $this->errorResponse('there was an error adding the file!',401);
-    }
+
     }
 
 
     //show a specific exisiting file
-    public function show($id)
+    public function show($folder_id)
     {
-        $file = File::find($id);
+        $file = File::where('folder_id' , $folder_id)->get();
     if ($file) {
-        return $this->successResponse(new FileResource($file), 'File Retrived Successfully', 200);
+        return $this->successResponse(FileResource::collection($file), 'File Retrived Successfully', 200);
     }
     return $this->errorResponse('The file not found', 401);
     }

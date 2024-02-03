@@ -9,7 +9,7 @@ class Folder extends Model
 {
     use HasFactory;
     protected $fillable = [
-      'name' , 'size' , 'creation_date'
+      'name' , 'size' , 'creation_date' , 'admin_id' , 'user_id'
     ];
 
     //folders can be controlled by only one admin
