@@ -34,7 +34,7 @@ class InboxMessagesController extends Controller
 
 
             $newMessage= InboxMessages::create([
-                'admin_id' => auth()->user()->id,
+                'admin_id' => $val_request['admin_id'],
                 'service' => $val_request['service'] ,
                 'name'    => $val_request['name'],
                 'companyName' => $val_request['companyName'],
@@ -45,7 +45,7 @@ class InboxMessagesController extends Controller
             ]);
             if($newMessage)
             {//check if it's added successfully.
-                return $this->successResponse(new InboxMessagesRequest($newMessage),'Message added successfully',201);
+                return $this->successResponse($newMessage,'Message added successfully',201);
             }
             return $this->errorResponse('there was an error adding the message!',401);
 

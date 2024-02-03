@@ -20,6 +20,9 @@ use App\Http\Controllers\Api\FolderController;
 use App\Http\Controllers\Api\FooterController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TeamController;
+
+use App\Http\Controllers\Api\PermissionController;
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -39,16 +42,20 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
+    Route::post('forgetPassword', 'forgotPassword');
+    Route::post('resetPassword' , 'resetPassword');
 
 });
+
 Route::prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index']);
-    Route::post('dashboard/id', [AdminController::class, 'store']);
+    Route::post('dashboard/{id}', [AdminController::class, 'store']);
 });
 
 
 //------------------------------Review Routes--------------------------------------//
 Route::group(['prefix'=>'home'],function(){
+
     //show all Reviews
     Route::get('/review',[ReviewController::class,'index']);
     //show a specific review
@@ -212,3 +219,5 @@ Route::group(['prefix'=>'home'],function(){
     Route::delete('folder/{folder_id}', [FolderController::class, 'destroy']);
 
     });
+
+    Route::get('/roles', [PermissionController::class,'Permission']);
