@@ -24,6 +24,8 @@ class FolderRequest extends FormRequest
     public function rules()
     {
         return [
+            'user_id' => ['required', 'integer', 'exists:users,id'] ,//to make sure that the user does exist.
+            'admin_id' => ['required', 'integer', 'exists:admins,id'] ,//to make sure that the admin does exist.
             'name'     => ['required' , 'string'],
             'size'     => ['required'],
             'creation_date'     => ['required'],

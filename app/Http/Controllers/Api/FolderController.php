@@ -40,6 +40,8 @@ class FolderController extends Controller
             }
         else{
             $newFolder = Folder::create([
+                'admin_id' => $val_request['admin_id'],
+                'user_id' => $val_request['user_id'],
                 'name'    => $val_request['name'],
                 'creation_date' => $val_request['creation_date'],
                 'size' => $val_request['size']

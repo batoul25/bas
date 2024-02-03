@@ -7,7 +7,6 @@ use App\Models\Admin;
 use App\Models\User;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminRequest;
 
 class AdminController extends Controller
@@ -47,7 +46,7 @@ class AdminController extends Controller
         if ($admin) {
             return $this->successResponse(new AdminResource($admin), 'the admin created successfully', 200);
         } else {
-            return $this->errorResponse(null,'the admin not added',401);
+            return $this->errorResponse('the admin not added',401);
         }
     }
 }

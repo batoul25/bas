@@ -16,7 +16,7 @@ class CaseStudyController extends Controller
     //show all the case studies
     public function index()
     {
-        $casestudies = Case_Study::get();
+        $casestudies = Case_Study::with('category')->get();
         if ($casestudies->isNotEmpty()){
             return $this->successResponse(Case_StudyResource::collection($casestudies), 'Data fetched successfully' , 200);
         }
@@ -31,7 +31,7 @@ class CaseStudyController extends Controller
         $val_request = $request->validated();
         $newest_order = Case_Study::max('order');//the record that has the maximum order value is the newest
         $casestudy = Case_Study::create([
-            'category'    => $val_request['category'],
+            'category_id' => $val_request['category_id'],
             'logo' => $val_request['logo'],
             'path' => $val_request['path'],
             'company_name' => $val_request['company_name'],
@@ -47,11 +47,11 @@ class CaseStudyController extends Controller
     }
 
     //show a specific case study by id
-    public function show($id)
+    public function show($category_id)
     {
-        $casestudy = Case_Study::find($id);
+        $casestudy = Case_Study::where('category_id' , $category_id)->get();
     if ($casestudy) {
-        return $this->successResponse(new Case_StudyResource($casestudy), 'Retrived Successfully');
+        return $this->successResponse(Case_StudyResource::collection($casestudy), 'Retrived Successfully');
     }
     return $this->errorResponse('The case study is not found',401);
     }

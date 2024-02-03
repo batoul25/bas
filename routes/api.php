@@ -3,11 +3,14 @@
 
 use App\Http\Controllers\Api\AdminController;
 
-
-
 use App\Http\Controllers\Api\CaseStudyController;
+use App\Http\Controllers\Api\CaseStudyCategoryController;
 use App\Http\Controllers\Api\CompanyProfileController;
 use App\Http\Controllers\Api\FileController;
+
+
+
+
 use App\Http\Controllers\Api\ReviewController;
 
 use App\Http\Controllers\Api\FAQsController;
@@ -21,12 +24,10 @@ use App\Http\Controllers\Api\FolderController;
 use App\Http\Controllers\Api\FooterController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TeamController;
+
+use App\Http\Controllers\Api\PermissionController;
+
 use Illuminate\Support\Facades\Route;
-
-
-
-
-
 
 
 /*
@@ -45,16 +46,20 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
+    Route::post('forgetPassword', 'forgotPassword');
+    Route::post('resetPassword' , 'resetPassword');
 
 });
+
 Route::prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index']);
-    Route::post('dashboard/id', [AdminController::class, 'store']);
+    Route::post('dashboard/{id}', [AdminController::class, 'store']);
 });
 
 
 //------------------------------Review Routes--------------------------------------//
 Route::group(['prefix'=>'home'],function(){
+
     //show all Reviews
     Route::get('/review',[ReviewController::class,'index']);
     //show a specific review
@@ -147,23 +152,22 @@ Route::group(['prefix'=>'home'],function(){
     //remove all services
     Route::get('/destroyall',[ServiceController::class,'destroy_all']);
 
-//------------------------------Footer Routes--------------------------------------//
-
-    //show all the footer links
-    Route::get('/footer' , [FooterController::class , 'index']);
-    //show a specific footer link
-    Route::get('/footer/{footer_id}' , [FooterController::class,'show' ]);
-    //ass a new footer link
-    Route::post('/footer' , [FooterController::class , 'store']);
-    //update exisiting footer link
-    Route::post('footer/{footer_id}', [FooterController::class, 'update']);
-    //remove existing footer link
-    Route::delete('footer/{footer_id}', [FooterController::class, 'destroy']);
-    //remove all footer links
-    Route::get('/destroyall',[FooterController::class,'destroy_all']);
-
+//------------------------------view project--------------------------------------//
+    Route::group(['prefix'=>'view_project'],function(){
+    //show a specific company profile
+    Route::get('/companyprofile/{companyprofile_id}' , [CompanyProfileController::class,'show' ]);
+    });
     });
 
+    Route::group(['prefix'=>'case'],function(){
+
+//------------------------------Case Study Category--------------------------------------//
+
+
+     //show all case studies categories with paginate
+     Route::get('/categories' , [CaseStudyCategoryController::class , 'index']);
+     //show a specific category
+     Route::get('/category/{catrgory_id}' , [CaseStudyCategoryController::class , 'show']);
 
 
 //------------------------------Case Study Routes--------------------------------------//
@@ -173,31 +177,28 @@ Route::group(['prefix'=>'home'],function(){
     //add a new case study
     Route::post('/casestudy' , [CaseStudyController::class , 'store']);
     //show a specific case study
-    Route::get('/casestudy/{casestudy_id}' , [CaseStudyController::class,'show' ]);
+    Route::get('/casestudy/{category_id}' , [CaseStudyController::class,'show' ]);
     //update exisiting case study
     Route::post('casestudy/{casestudy_id}', [CaseStudyController::class, 'update']);
     //delete exisiting case study
     Route::delete('casestudy/{id}', [CaseStudyController::class, 'destroy']);
 
+    });
 
 //------------------------------Cpmpany Profile Routes--------------------------------------//
 
     //show all company profiles
     Route::get('/companyprofile' , [CompanyProfileController::class , 'index']);
-    //add a new company profile
-    Route::post('/companyprofile' , [CompanyProfileController::class , 'store']);
+
     //show a specific company profile
     Route::get('/companyprofile/{companyprofile_id}' , [CompanyProfileController::class,'show' ]);
-    //update exisiting compnay profile
-    Route::post('companyprofile/{companyprofile_id}', [CompanyProfileController::class, 'update']);
-    //delete exisiting company profile
-    Route::delete('companyprofile/{companyprofile_id}', [CompanyProfileController::class, 'destroy']);
 
+    Route::group(['prefix'=>'admin'],function(){
 
 //------------------------------Files Routes--------------------------------------//
 
     //show all the files
-    Route::get('/file' , [FileController::class , 'index']);
+    Route::get('/files' , [FileController::class , 'index']);
     //add a new file
     Route::post('/file' , [FileController::class , 'store']);
     //show a specific file
@@ -211,14 +212,16 @@ Route::group(['prefix'=>'home'],function(){
 //------------------------------Folder Routes--------------------------------------//
 
     //show all the folders
-    Route::get('/folder' , [FolderController::class , 'index']);
+    Route::get('/folders' , [FolderController::class , 'index']);
     //add a new folder
     Route::post('/folder' , [FolderController::class , 'store']);
     //show a specific folder
     Route::get('/folder/{folder_id}' , [FolderController::class,'show' ]);
     //upadte an exisiting folder
-    Route::put('folder/{folder_id}', [FolderController::class, 'update']);
+    Route::post('folder/{folder_id}', [FolderController::class, 'update']);
     //delete an exisiting folder
     Route::delete('folder/{folder_id}', [FolderController::class, 'destroy']);
 
+    });
 
+    Route::get('/roles', [PermissionController::class,'Permission']);

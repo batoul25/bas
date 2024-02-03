@@ -24,6 +24,9 @@ class FileRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_id' => ['required', 'integer', 'exists:users,id'] ,//to make sure that the user does exist.
+            'admin_id' => ['required', 'integer', 'exists:admins,id'] ,//to make sure that the admin does exist.
+            'folder_id' => ['required' , 'integer' , 'exists:folders,id'],//to make sure that the folder does exist.
             'name'     => ['required' , 'string'],
             'date'     => ['required'],
             'size'     => ['required' ],

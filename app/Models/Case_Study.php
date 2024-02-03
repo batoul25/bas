@@ -9,7 +9,7 @@ class Case_Study extends Model
 {
     use HasFactory;
     protected $fillable  = [
-        'category' , 'logo' , 'path' ,
+        'category_id' , 'logo' , 'path' ,
         'company_name' , 'order'
     ];
 
@@ -21,6 +21,10 @@ class Case_Study extends Model
     //case study belongs to one user
     public function user(){
         return $this->belongsTo(User::class , 'user_id');
+    }
+
+    public function category(){
+        return $this->hasOne(CaseStudyCategory::class, 'id' , 'category_id');
     }
 
 }
