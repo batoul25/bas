@@ -2,9 +2,6 @@
 
 
 use App\Http\Controllers\Api\AdminController;
-use App\Http\Controllers\Api\CaseStudyController;
-use App\Http\Controllers\Api\CompanyProfileController;
-use App\Http\Controllers\Api\FileController;
 
 use App\Http\Controllers\Api\CaseStudyController;
 use App\Http\Controllers\Api\CompanyProfileController;
@@ -48,9 +45,9 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('refresh', 'refresh');
 
 });
-Route::prefix('admin')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'index']);
-    Route::post('dashboard/id', [AdminController::class, 'store']);
+Route::prefix('auth')->group(function () {
+    Route::get('/admins', [AdminController::class, 'index']);
+    Route::post('admin/{id}', [AdminController::class, 'store']);
 });
 
 

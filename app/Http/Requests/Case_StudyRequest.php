@@ -23,10 +23,15 @@ class Case_StudyRequest extends FormRequest
     public function rules()
     {
         return [
-            'category' => ['required' , 'string'],
-            'logo'     => ['required','image','mimes:jpg,png,jpeg,gif,svg','max:2048'] ,
+            'user_id'          => ['required'],
+            'admin_id'         => ['required'],
+            'category'         => ['required' , 'string'],
+            'logo'             => ['required','image','mimes:jpg,png,jpeg','max:2048'] ,
             'company_name'     => ['required' , 'string'] ,
-            'order'    => ['required' , 'integer' , 'min:1' , 'between:1,50']
+            'order'            => ['required' , 'integer' , 'min:1' , 'between:1,50'],
+            'path'             =>  [ 'string'],
+
+
         ];
     }
 

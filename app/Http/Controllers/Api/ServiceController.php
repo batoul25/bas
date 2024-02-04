@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Resources\ServiceResource;
 use App\Models\Service;
 use App\Traits\ApiResponse;
+use App\Traits\UploadPhotoTrait;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
-    use ApiResponse;
+    use ApiResponse , UploadPhotoTrait;
 
     //show all the services
     public function index()

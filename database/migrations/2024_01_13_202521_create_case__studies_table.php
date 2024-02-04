@@ -15,8 +15,10 @@ return new class extends Migration
     {
         Schema::create('case__studies', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('admin_id')->references('id')->on('admins')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unsignedBigInteger('admin_id')->nullable();
+           // $table->foreignId('admin_id')->references('id')->on('admins')->cascadeOnDelete()->cascadeOnUpdate();
+            // $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('category');
             $table->binary('logo');
             $table->longText('path');

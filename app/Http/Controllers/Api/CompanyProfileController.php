@@ -6,11 +6,12 @@ use App\Http\Requests\CompanyProfileRequest;
 use App\Http\Resources\CompanyProfileResource;
 use App\Models\Company_Profile;
 use App\Traits\ApiResponse;
+use App\Traits\UploadPhotoTrait;
 use Illuminate\Http\Request;
 
 class CompanyProfileController extends Controller
 {
-    use ApiResponse;
+    use ApiResponse , UploadPhotoTrait;
 
     //dispaly all the company profile
     public function index(){

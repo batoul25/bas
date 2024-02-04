@@ -30,7 +30,7 @@ class ProjectRequest extends FormRequest
             'companyName' => ['required' , 'string'] ,
             'serviceProvided' => ['required' , 'string'] ,
             'descirption' => ['required','string', 'min:15', 'max:300'] ,
-            'CEOName' => ['required' , 'string']
+            'CEOName' => ['required' , 'string'],
         ];
     }
 

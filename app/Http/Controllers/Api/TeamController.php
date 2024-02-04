@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Resources\TeamResource;
 use App\Models\Team;
 use App\Traits\ApiResponse;
+use App\Traits\UploadPhotoTrait;
 
 
 class TeamController extends Controller
 {
-    use ApiResponse;
+    use ApiResponse , UploadPhotoTrait;
 
     //show all the team members
     public function index()

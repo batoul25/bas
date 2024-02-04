@@ -7,7 +7,6 @@ use App\Models\Admin;
 use App\Models\User;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminRequest;
 
 class AdminController extends Controller
@@ -21,7 +20,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $admin = User::all();
+        $admin = Admin::all();
         return $this->successResponse($admin, 'ok', 200);
     }
 
@@ -31,23 +30,42 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    // public function store(AdminRequest $request)
+    // {
+    //     $this->validate($request, [
+    //         'email' => 'required|email|unique:admins',
+    //         'password' => 'required|min:6',
+    //     ]);
+
+    //     $admin = Admin::create([
+    //         'email' => $request->email,
+    //         'password' => bcrypt($request->password),
+    //     ]);
+
+    //   //  $admin = Admin::create($request->all());
+    //     if ($admin) {
+    //         return $this->successResponse(new AdminResource($admin), 'the admin created successfully', 200);
+    //     } else {
+    //         return $this->errorResponse(null,'the admin not added',401);
+    //     }
+    // }
     public function store(AdminRequest $request)
-    {
-        $$this->validate($request, [
-            'email' => 'required|email|unique:admins',
-            'password' => 'required|min:6',
-        ]);
+{
+    $this->validate($request, [
+        'email' =>['required'],
+        'password' => 'required',
+    ]);
 
-        $admin = Admin::create([
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
+    $admin = Admin::create([
+        'email' => $request->email,
+        'password' => bcrypt($request->password),
+    ]);
 
-        $admin = Admin::create($request->all());
-        if ($admin) {
-            return $this->successResponse(new AdminResource($admin), 'the admin created successfully', 200);
-        } else {
-            return $this->errorResponse(null,'the admin not added',401);
-        }
+    if ($admin) {
+        return $this->successResponse(new AdminResource($admin), 'the admin created successfully', 200);
+    } else {
+        return $this->errorResponse(null, 'the admin not added', 401);
     }
+}
+
 }

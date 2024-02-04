@@ -6,11 +6,12 @@ use App\Http\Requests\FooterRequest;
 use App\Http\Resources\FooterResource;
 use App\Models\footer;
 use App\Traits\ApiResponse;
+use App\Traits\UploadPhotoTrait;
 
 
 class FooterController extends Controller
 {
-    use ApiResponse;
+    use ApiResponse , UploadPhotoTrait;
 
    //display all the footer info
     public function index()
