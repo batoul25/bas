@@ -1,66 +1,115 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# BAS (Black Analysis Solution)
+Black Analysis Solution (BAS) is a Laravel-based web application that provides a platform for users to upload their files to cloud storage and obtain data analysis services by the company for consulting purposes.
 
-## About Laravel
+This project was developed as a training exercise at Focal X company, in collaboration with a team of backend and frontend developers.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+## Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- User Registration: Users can create an account to access the platform.
+- User Authentication: Secure user authentication and session management.
+- File Upload: Users can upload their files to the cloud storage.
+- Data Analysis: The company provides data analysis services on the uploaded files.
+- User Dashboard: Users can view and manage their uploaded files and analysis reports.
+- Admin Panel: Admins have access to an admin panel to manage users and perform administrative tasks.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Requirements
+- PHP 7.4 or higher
+- Laravel 8.x
+- Composer (Dependency Manager)
+- MySQL or any supported database management system
+- Web server (e.g., Apache, Nginx)
+## Installation
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Install my-project with npm
 
-## Laravel Sponsors
+```bash
+  npm install my-project
+  cd my-project
+```
+1. Clone the repository:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```bash
+git clone https://github.com/batoul25/bas.git
 
-### Premium Partners
+```
+2. Navigate to the project directory:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+```bash
+cd bas-black-analysis-solution
+```
+3. Install the dependencies:
+
+```bash
+composer install
+```
+4. Create a new .env file:
+
+```bash
+cp .env.example .env
+```
+5. Generate a new application key:
+
+```bash
+php artisan key:generate
+```
+6. Configure the database connection by updating the .env file with your database credentials.
+
+7. Run the database migrations and seed the initial data:
+
+```bash
+php artisan migrate --seed
+```
+8. Start the development server:
+
+```bash
+php artisan serve
+```
+9. Access the application by visiting http://localhost:8000 in your web browser.
+
+## Usage
+
+1. Register a new user account on the application.
+2. Log in to the user dashboard.
+3. Upload files to the cloud storage.
+4. Wait for the company to perform data analysis on the uploaded files.
+5. View the analysis reports on the user dashboard.
+6. Admins can access the admin panel to manage users and perform administrative tasks.
+
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Contributions are welcome! If you encounter any bugs, have feature requests, or would like to make improvements, please open an issue or submit a pull request.
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-source and available under the [MIT](https://choosealicense.com/licenses/mit/) License.
+
+
+## Contact
+For any inquiries or support, please contact me at batouljdid25@gmail.com
+## Authors
+
+- [Batoul Jdid](https://github.com/batoul25)
+- [Ebrahim Mohammad](https://github.com/ebrahim-mohammad)
+
+## Acknowledgements
+
+This project was developed by the team at Focal X company as a training exercise, with contributions from both backend and frontend developers.
+
+
+## API Reference
+
+#### Base URL
+The base URL for all API endpoints is: http://localhost:8000/api
+
+#### API Documentation
+
+https://documenter.getpostman.com/view/29038500/2s9YyvC17L
+
+
+
