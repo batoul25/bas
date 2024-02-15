@@ -20,6 +20,8 @@ use App\Http\Controllers\Api\FolderController;
 use App\Http\Controllers\Api\FooterController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TeamController;
+use App\Http\Controllers\Api\UserController;
+
 
 use App\Http\Controllers\Api\PermissionController;
 
@@ -221,3 +223,12 @@ Route::group(['prefix'=>'home'],function(){
     });
 
     Route::get('/roles', [PermissionController::class,'Permission']);
+
+    // Allow the user to upload files to the server
+    Route::post('/uploadFile', [UserController::class, 'uploadFile']);
+
+    // Allow the users to download the files
+    Route::get('/downloadFile/{fileName}', [UserController::class, 'downloadFile']);
+
+    // The admin can update the total space of the users
+    Route::post('/updateTotalSpace/{userId}', [AdminController::class, 'updateTotalSpace']);

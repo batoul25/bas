@@ -21,6 +21,7 @@ class User extends Authenticatable
         'email',
         'password',
         'Total_Space' , 'Remaining_Space'
+        , 'path'
     ];
 
     /**
